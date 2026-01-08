@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-export default function ObrigadoPage() {
+function ObrigadoContent() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name") ?? "";
   const phone = searchParams.get("phone") ?? "";
@@ -161,5 +161,38 @@ export default function ObrigadoPage() {
         </div>
       </div>
     </CDBackground>
+  );
+}
+
+export default function ObrigadoPage() {
+  return (
+    <Suspense
+      fallback={
+        <CDBackground>
+          <div className="min-h-[100vh] flex items-center justify-center px-4">
+            <div className="w-full max-w-md rounded-3xl bg-slate-950/90 border border-slate-800 shadow-2xl shadow-black/70 backdrop-blur-xl p-6 md:p-8 text-center space-y-6">
+              <div className="flex justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-slate-900 border border-emerald-500/60 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.4)] overflow-hidden">
+                  <Image
+                    src="/logo.webp"
+                    alt="Conexão Direta"
+                    width={48}
+                    height={48}
+                    className="rounded-xl object-contain"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <h1 className="text-xl md:text-2xl font-semibold text-slate-50">
+                  Carregando...
+                </h1>
+              </div>
+            </div>
+          </div>
+        </CDBackground>
+      }
+    >
+      <ObrigadoContent />
+    </Suspense>
   );
 }
